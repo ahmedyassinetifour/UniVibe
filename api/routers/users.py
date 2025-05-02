@@ -153,3 +153,52 @@ async def update_profile(
     
     # Return the updated user
     return user 
+
+@router.put("/users/me/complete-profile", response_model=UserResponse)
+async def update_complete_profile(
+    profile_data: CompleteProfileUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Update the complete profile of the current user.
+    This endpoint is specifically designed to work with EditProfile.qml
+    and allows updating any or all user profile fields.
+    Only the fields provided in the request will be updated.
+    """
+    # Get the current user from the database
+    user = db.query(User).filter(User.user_id == current_user.user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Update each field if provided in the request
+    if profile_data.first_name is not None:
+        user.first_name = profile_data.first_name
+        
+    if profile_data.last_name is not None:
+        user.last_name = profile_data.last_name
+        
+    if profile_data.date_of_birth is not None:
+        user.date_of_birth = profile_data.date_of_birth
+        
+    if profile_data.bio is not None:
+        user.bio = profile_data.bio
+        
+    if profile_data.about_me is not None:
+        user.about_me = profile_data.about_me
+        
+    if profile_data.phone_number is not None:
+        user.phone_number = profile_data.phone_number
+        
+    if profile_data.interests is not None:
+        user.interests = profile_data.interests
+    
+    if profile_data.profile_picture is not None:
+        user.profile_picture = profile_data.profile_picture
+    
+    # Commit changes to the database
+    db.commit()
+    db.refresh(user)
+    
+    # Return the updated user
+    return user 
