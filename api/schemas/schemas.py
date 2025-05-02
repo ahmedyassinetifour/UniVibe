@@ -224,6 +224,16 @@ class ProfileUpdate(BaseModel):
     about_me: Optional[str] = None
     phone_number: Optional[str] = None
     interests: Optional[List[Any]] = None
+    # Schema for complete profile update (used by EditProfile.qml)
+class CompleteProfileUpdate(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    date_of_birth: Optional[date] = None
+    bio: Optional[str] = None
+    about_me: Optional[str] = None
+    phone_number: Optional[str] = None
+    interests: Optional[List[Any]] = None
+    profile_picture: Optional[str] = None
 
 # Event Participation Schemas
 class EventParticipationCreate(BaseModel):
