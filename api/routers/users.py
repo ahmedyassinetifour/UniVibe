@@ -4,7 +4,7 @@ from typing import List
 
 from api.database.connection import get_db
 from api.models.models import User, ClubMember
-from api.schemas.schemas import UserResponse, ClubMemberWithClubResponse, RoleAssignRequest, ProfilePictureUpdate, ProfileUpdate
+from api.schemas.schemas import UserResponse, ClubMemberWithClubResponse, RoleAssignRequest, ProfilePictureUpdate, ProfileUpdate, CompleteProfileUpdate
 from api.auth.utils import get_current_user
 
 router = APIRouter(
