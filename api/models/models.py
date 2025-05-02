@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Enum, Date, TIMESTAMP, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, Text, Enum, Date, TIMESTAMP, ForeignKey, Boolean, JSON
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from api.database.connection import Base
@@ -16,10 +16,14 @@ class User(Base):
     first_name = Column(String(100))
     last_name = Column(String(100))
     date_of_birth = Column(Date)
+    phone_number = Column(String(15))
     created_at = Column(TIMESTAMP, default=datetime.now)
     updated_at = Column(TIMESTAMP, default=datetime.now, onupdate=datetime.now)
     club_memberships = relationship("ClubMember", back_populates="user")
     join_requests = relationship("ClubJoinRequest", back_populates="user")
+    bio = Column(String(255))
+    about_me = Column(Text)
+    interests = Column(JSON)
 
 class Club(Base):
     __tablename__ = 'clubs'

@@ -2,13 +2,19 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import logging
+import os  # <-- Add this to access environment variables
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Database setup
-SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://UniVibe:Un1Vibe2025@univibe.mysql.database.azure.com/univibe"
+# Database setup using environment variable
+SQLALCHEMY_DATABASE_URL = os.environ.get("DATABASE_URL")  # 'DBLINK' should match your App Service setting
+
+if not SQLALCHEMY_DATABASE_URL:
+    logger.error("Environment variable DATABASE_URL is not set!")
+    raise ValueError("DATABASE_URL environment variable is required but not found.")
+
 try:
     engine = create_engine(SQLALCHEMY_DATABASE_URL)
     logger.info("Database connection successful")
@@ -25,4 +31,4 @@ def get_db():
     try:
         yield db
     finally:
-        db.close() 
+        db.close()

@@ -11,6 +11,10 @@ class UserCreate(BaseModel):
     first_name: str
     last_name: str
     date_of_birth: date
+    phone_number: Optional[str] = None
+    bio: Optional[str] = None
+    about_me: Optional[str] = None
+    interests: Optional[List[str]] = None
 
 class UserResponse(BaseModel):
     user_id: int
@@ -22,6 +26,10 @@ class UserResponse(BaseModel):
     date_of_birth: date
     created_at: Optional[datetime] = None
     profile_picture: Optional[str] = None
+    phone_number: Optional[str] = None
+    bio: Optional[str] = None
+    about_me: Optional[str] = None
+    interests: Optional[List[Any]] = None
 
     class Config:
         from_attributes = True
@@ -209,6 +217,13 @@ class RoleAssignRequest(BaseModel):
 # Schema for updating user profile picture
 class ProfilePictureUpdate(BaseModel):
     profile_picture: str
+
+# Schema for updating user profile information
+class ProfileUpdate(BaseModel):
+    bio: Optional[str] = None
+    about_me: Optional[str] = None
+    phone_number: Optional[str] = None
+    interests: Optional[List[Any]] = None
 
 # Event Participation Schemas
 class EventParticipationCreate(BaseModel):

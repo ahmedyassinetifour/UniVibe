@@ -4,7 +4,7 @@ from typing import List
 
 from api.database.connection import get_db
 from api.models.models import User, ClubMember
-from api.schemas.schemas import UserResponse, ClubMemberWithClubResponse, RoleAssignRequest, ProfilePictureUpdate
+from api.schemas.schemas import UserResponse, ClubMemberWithClubResponse, RoleAssignRequest, ProfilePictureUpdate, ProfileUpdate
 from api.auth.utils import get_current_user
 
 router = APIRouter(
@@ -117,6 +117,35 @@ async def clear_profile_picture(
     
     # Clear the profile picture
     user.profile_picture = None
+    
+    # Commit changes to the database
+    db.commit()
+    db.refresh(user)
+    
+    # Return the updated user
+    return user
+
+@router.put("/users/me/profile", response_model=UserResponse)
+async def update_profile(
+    profile_data: ProfileUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Update the current user's profile information (bio, about_me, phone_number, interests)"""
+    # Get the current user from the database
+    user = db.query(User).filter(User.user_id == current_user.user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Update the fields if provided
+    if profile_data.bio is not None:
+        user.bio = profile_data.bio
+    if profile_data.about_me is not None:
+        user.about_me = profile_data.about_me
+    if profile_data.phone_number is not None:
+        user.phone_number = profile_data.phone_number
+    if profile_data.interests is not None:
+        user.interests = profile_data.interests
     
     # Commit changes to the database
     db.commit()
