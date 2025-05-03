@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
-
+from fastapi.middleware.cors import CORSMiddleware
 from api.database.connection import engine
 from api.models.models import Base
 from api.routers import auth, users, clubs, events
