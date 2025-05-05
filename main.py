@@ -5,17 +5,16 @@ from api.database.connection import engine
 from api.models.models import Base
 from api.routers import auth, users, clubs, events
 
-# Create tables
+
 Base.metadata.create_all(bind=engine)
 
-# Create FastAPI app
+
 app = FastAPI(
     title="UniVibe API",
     description="API for university club management",
     version="1.0.0"
 )
 
-# Enable CORS for all origins (for development)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], 
@@ -24,7 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
+
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(clubs.router)
