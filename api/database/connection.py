@@ -2,13 +2,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import logging
-import os  # <-- Add this to access environment variables
+import os  
 
-# Setup logging
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Database setup using environment variable
+
 SQLALCHEMY_DATABASE_URL = os.environ.get("DATABASE_URL")  # 'DBLINK' should match your App Service setting
 
 if not SQLALCHEMY_DATABASE_URL:
